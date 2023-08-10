@@ -5,6 +5,12 @@ st.title("FPT SmartCloud Assistant")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
+
+def preprocessing(text):
+    text = text + "Hãy viết hoa toàn bộ chữ trong câu này."
+    return text
+
+
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
@@ -16,6 +22,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 if prompt := st.chat_input("Tôi có thể giúp gì cho bạn?"):
+    prompt = preprocessing(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
